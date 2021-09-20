@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from django.contrib.sessions.models import Session
 from django.shortcuts import render
 from rest_framework import status, generics
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -23,6 +26,12 @@ class LoginView(ObtainAuthToken):
                         'user': user_serializer.data
                     }, status=status.HTTP_201_CREATED)
                 else:
+                    all_sessions = Session.objects.filter(expire_date__gte=datetime.now())
+                    if all_sessions.exists():
+                        for session in all_sessions:
+                            session_data = session.get_decoded()
+                            if user.id == int(session_data.get('_auth_user_id')):
+                                session.delete()
                     token.delete()
                     token = Token.objects.create(user=user)
                     return Response({
