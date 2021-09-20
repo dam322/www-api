@@ -14,6 +14,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Libraries
     'rest_framework',
+    'rest_framework.authtoken',
     # CustomAPPS
     'apps.users',
     'apps.orders',
@@ -29,6 +30,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
 ROOT_URLCONF = 'www_api.urls'
 TEMPLATES = [
     {

@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
+from django.utils.timezone import now
 
 
 class UserManager(BaseUserManager):
@@ -20,6 +21,7 @@ class UserManager(BaseUserManager):
         user.is_admin = True
         user.is_superuser = True
         user.is_staff = True
+        user.birthday = now()
         user.save()
         return user
 
@@ -35,7 +37,9 @@ class User(AbstractBaseUser):
     first_name = models.CharField(max_length=32)
     last_name = models.CharField(max_length=32)
     cell_phone = models.CharField(max_length=16)
-    birth_day = models.DateField()
+    birth_day = models.DateField(null=True)
+    direction = models.CharField(max_length=64)
+    city = models.CharField(max_length=32)
     # Información para extender AbstractBaseUser
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
