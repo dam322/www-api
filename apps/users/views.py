@@ -32,7 +32,7 @@ class LoginView(ObtainAuthToken):
             else:
                 return Response({'error': 'Este usuario no puede iniciar sesión'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
-            return Response({'error': 'Nombre de usuario o contraseña inncorrectos'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Nombre de usuario o contraseña incorrectos'}, status=status.HTTP_400_BAD_REQUEST)
 
 # class UserListView(generics.ListAPIView):
 #     queryset = User.objects.all()
