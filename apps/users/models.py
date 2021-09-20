@@ -34,7 +34,8 @@ class User(AbstractBaseUser):
     type = models.CharField(choices=UserType.choices, default="Cajero", null=False, max_length=16)
     first_name = models.CharField(max_length=32)
     last_name = models.CharField(max_length=32)
-
+    cell_phone = models.CharField(max_length=16)
+    birth_day = models.DateField()
     # Información para extender AbstractBaseUser
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
