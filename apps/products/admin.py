@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from apps.products.models import Product, Ingredient, Option
+from apps.products.models import Product, Ingredient, Variation
 
 
 class IngredientInline(admin.TabularInline):
@@ -16,7 +16,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class OptionInline(admin.TabularInline):
-    model = Option
+    model = Variation
     extra = 1
 
 

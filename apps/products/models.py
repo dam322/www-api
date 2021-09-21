@@ -7,6 +7,7 @@ class Product(models.Model):
     name = models.CharField(max_length=32)
     restaurant = models.ForeignKey(to=Restaurant, on_delete=models.CASCADE)
     is_customizable = models.BooleanField()
+    is_available = models.BooleanField()
     price = models.IntegerField()
     photo = models.ImageField(upload_to='products')
 
@@ -23,7 +24,7 @@ class Ingredient(models.Model):
         return self.options.exists()
 
 
-class Option(models.Model):
+class Variation(models.Model):
     name = models.CharField(max_length=32)
     is_available = models.BooleanField()
     ingredient = models.ForeignKey(to=Ingredient, on_delete=models.CASCADE, related_name='options')
