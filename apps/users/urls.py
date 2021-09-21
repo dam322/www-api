@@ -14,6 +14,5 @@ urlpatterns = [
     path('restaurants/', RestaurantListAPIView.as_view()),
     path('restaurant/create', RestaurantCreateAPIView.as_view()),
     path('restaurant/<int:pk>', RestaurantRetrieveUpdateDestroyAPIView.as_view()),
-    # TODO Buscar restaurantes
     path('list-employees/', ListEmployeesView.as_view()),
 ]
