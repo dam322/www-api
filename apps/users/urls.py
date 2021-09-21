@@ -1,13 +1,12 @@
 from django.contrib import admin
 from django.urls import path
-from .views import LoginAPIView, LogoutAPIView  # , UserListView
+from .views import LoginAPIView, LogoutAPIView, SignupAPIView  # , UserListView
 urlpatterns = [
-    # TODO Login ##
     path('login/', LoginAPIView.as_view()),
     # path('all/', UserListView.as_view())
-    # TODO Logout
     path('logout/', LogoutAPIView.as_view()),
     # TODO Signup ##
+    path('signup/', SignupAPIView.as_view()),
     # TODO Account ##
     # TODO UpdateAccount ##
     # TODO DeleteAccount
