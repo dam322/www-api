@@ -5,11 +5,14 @@ from apps.users.models import Restaurant
 
 class Product(models.Model):
     name = models.CharField(max_length=32)
-    restaurant = models.ForeignKey(to=Restaurant, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(to=Restaurant, on_delete=models.CASCADE, related_name='products')
     is_customizable = models.BooleanField()
     is_available = models.BooleanField()
     price = models.IntegerField()
     photo = models.ImageField(upload_to='products')
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Ingredient(models.Model):
@@ -21,10 +24,16 @@ class Ingredient(models.Model):
 
     @property
     def has_options(self):
-        return self.options.exists()
+        return self.variations.exists()
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Variation(models.Model):
     name = models.CharField(max_length=32)
     is_available = models.BooleanField()
-    ingredient = models.ForeignKey(to=Ingredient, on_delete=models.CASCADE, related_name='options')
+    ingredient = models.ForeignKey(to=Ingredient, on_delete=models.CASCADE, related_name='variations')
+
+    def __str__(self):
+        return f"{self.name}"
