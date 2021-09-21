@@ -14,6 +14,9 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    def administrator(self):
+        return self.restaurant.administrator
+
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=32)
