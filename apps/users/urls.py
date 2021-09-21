@@ -1,12 +1,18 @@
 from django.contrib import admin
 from django.urls import path
-from .views import LoginAPIView, LogoutAPIView, SignupAPIView, AccountAPIView, SignupByAdministratorAPIView
+from .views import (
+    LoginAPIView, LogoutAPIView, SignupAPIView, AccountAPIView, ListEmployeesView,
+    RestaurantRetrieveUpdateDestroyAPIView, RestaurantListCreateAPIView
+)
 
 urlpatterns = [
     path('login/', LoginAPIView.as_view()),
     path('logout/', LogoutAPIView.as_view()),
     path('signup/', SignupAPIView.as_view()),
     path('account/<int:pk>', AccountAPIView.as_view()),
-    path('signup/', SignupByAdministratorAPIView.as_view()),
-    # TODO Listar empleados de un restaurante
+    # Restaurants
+    path('restaurant/', RestaurantListCreateAPIView.as_view()),
+    path('restaurant/<int:pk>', RestaurantRetrieveUpdateDestroyAPIView.as_view()),
+    # TODO Buscar restaurantes
+    path('list-employees/', ListEmployeesView.as_view()),
 ]

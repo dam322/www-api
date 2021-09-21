@@ -5,11 +5,12 @@ from django.contrib.sessions.models import Session
 from rest_framework import status, views, generics
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from apps.users.models import User
-from apps.users.serializers import UserSerializer, UserLoginSerializer, SignupSerializer
+from apps.users.models import User, Restaurant
+from apps.users.serializers import UserSerializer, UserLoginSerializer, SignupSerializer, RestaurantSerializer
 
 
 class LoginAPIView(views.APIView):
@@ -50,11 +51,14 @@ class SignupAPIView(generics.CreateAPIView):
     serializer_class = SignupSerializer
 
 
-class SignupByAdministratorAPIView(generics.CreateAPIView):
-    # TODO Los empleados van atados a los restaurantes
+class ListEmployeesView(generics.ListAPIView):
     queryset = User.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = SignupSerializer
+
+    def get_queryset(self):
+        restaurant = Restaurant.objects.get(administrator=self.request.user)
+        return restaurant.employees
 
 
 class AccountAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -62,6 +66,20 @@ class AccountAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
-# class UserListView(generics.ListAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+
+class RestaurantRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Restaurant.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RestaurantSerializer
+
+
+class CustomPagination(PageNumberPagination):
+    max_page_size = 20
+    page_size = 20
+
+
+class RestaurantListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Restaurant.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RestaurantSerializer
+    pagination_class = CustomPagination

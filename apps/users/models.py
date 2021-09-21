@@ -48,7 +48,7 @@ class User(AbstractBaseUser):
     birth_day = models.DateField(null=True)
     direction = models.CharField(max_length=64)
     city = models.CharField(max_length=32)
-    restaurant = models.ForeignKey(to='Restaurant', on_delete=models.CASCADE, null=True, blank=True)
+    restaurant = models.ForeignKey(to='Restaurant', on_delete=models.CASCADE, null=True, blank=True, related_name='employees')
     # Información para extender AbstractBaseUser
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
