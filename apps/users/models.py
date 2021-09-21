@@ -3,6 +3,14 @@ from django.db import models
 from django.utils.timezone import now
 
 
+class Restaurant(models.Model):
+    direction = models.CharField(max_length=64)
+    city = models.CharField(max_length=32)
+    name = models.CharField(max_length=32)
+    logo = models.ImageField(upload_to='logos/')
+    administrator = models.ForeignKey(to='User', on_delete=models.CASCADE, related_name='admin')
+
+
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
         if not email:
@@ -40,6 +48,7 @@ class User(AbstractBaseUser):
     birth_day = models.DateField(null=True)
     direction = models.CharField(max_length=64)
     city = models.CharField(max_length=32)
+    restaurant = models.ForeignKey(to='Restaurant', on_delete=models.CASCADE, null=True, blank=True)
     # Información para extender AbstractBaseUser
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)

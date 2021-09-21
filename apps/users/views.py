@@ -50,7 +50,14 @@ class SignupAPIView(generics.CreateAPIView):
     serializer_class = SignupSerializer
 
 
-class AccountAPIView(generics.RetrieveAPIView):
+class SignupByAdministratorAPIView(generics.CreateAPIView):
+    # TODO Los empleados van atados a los restaurantes
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = SignupSerializer
+
+
+class AccountAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
