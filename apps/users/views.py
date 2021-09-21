@@ -50,6 +50,10 @@ class SignupAPIView(generics.CreateAPIView):
     serializer_class = SignupSerializer
 
 
+class AccountAPIView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
 
 # class UserListView(generics.ListAPIView):
 #     queryset = User.objects.all()
