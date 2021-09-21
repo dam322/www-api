@@ -1,16 +1,12 @@
-from datetime import datetime
-
 from django.contrib.auth import logout, authenticate, login
-from django.contrib.sessions.models import Session
 from rest_framework import status, views, generics
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
+from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from apps.users.models import User, Restaurant
-from apps.users.serializers import UserSerializer, UserLoginSerializer, SignupSerializer, RestaurantSerializer
+from apps.users.serializers import UserSerializer, UserLoginSerializer, SignupSerializer, RestaurantSerializer, RestaurantListSerializer
 
 
 class LoginAPIView(views.APIView):
@@ -78,8 +74,16 @@ class CustomPagination(PageNumberPagination):
     page_size = 20
 
 
-class RestaurantListCreateAPIView(generics.ListCreateAPIView):
+class RestaurantListAPIView(generics.ListAPIView):
+    queryset = Restaurant.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RestaurantListSerializer
+    pagination_class = CustomPagination
+    filter_backends = [SearchFilter]
+    search_fields = ['direction', 'name', 'city']
+
+
+class RestaurantCreateAPIView(generics.CreateAPIView):
     queryset = Restaurant.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = RestaurantSerializer
-    pagination_class = CustomPagination

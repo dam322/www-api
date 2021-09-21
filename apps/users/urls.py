@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import (
     LoginAPIView, LogoutAPIView, SignupAPIView, AccountAPIView, ListEmployeesView,
-    RestaurantRetrieveUpdateDestroyAPIView, RestaurantListCreateAPIView
+    RestaurantRetrieveUpdateDestroyAPIView, RestaurantListAPIView, RestaurantCreateAPIView
 )
 
 urlpatterns = [
@@ -11,7 +11,8 @@ urlpatterns = [
     path('signup/', SignupAPIView.as_view()),
     path('account/<int:pk>', AccountAPIView.as_view()),
     # Restaurants
-    path('restaurant/', RestaurantListCreateAPIView.as_view()),
+    path('restaurants/', RestaurantListAPIView.as_view()),
+    path('restaurant/create', RestaurantCreateAPIView.as_view()),
     path('restaurant/<int:pk>', RestaurantRetrieveUpdateDestroyAPIView.as_view()),
     # TODO Buscar restaurantes
     path('list-employees/', ListEmployeesView.as_view()),

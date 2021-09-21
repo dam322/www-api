@@ -21,9 +21,15 @@ class SmallUserSerializer(serializers.ModelSerializer):
                   )
 
 
-class RestaurantSerializer(serializers.ModelSerializer):
+class RestaurantListSerializer(serializers.ModelSerializer):
     administrator = SmallUserSerializer(read_only=True)
 
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
+
+
+class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = '__all__'
