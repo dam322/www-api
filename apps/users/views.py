@@ -21,10 +21,8 @@ class LoginAPIView(views.APIView):
 
             user = authenticate(username=data['email'], password=data['password'])
             login(request, user)
-            new_data = {
-                'user': UserSerializer(instance=user).data,
-                'token': token
-            }
+            new_data = UserSerializer(instance=user).data
+            new_data['token'] = token
             return Response(new_data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
