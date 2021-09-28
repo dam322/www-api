@@ -33,7 +33,7 @@ class User(AbstractBaseUser):
         CUSTOMER = 'customer'
 
     email = models.EmailField(max_length=60, unique=True)
-    type = models.CharField(choices=UserType.choices, default="Cajero", null=False, max_length=16)
+    type = models.CharField(choices=UserType.choices, default=UserType.CUSTOMER, null=False, max_length=16)
     first_name = models.CharField(max_length=32)
     last_name = models.CharField(max_length=32)
     cell_phone = models.CharField(max_length=16)

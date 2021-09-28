@@ -4,7 +4,6 @@ from .models import Product, Ingredient, Variation
 
 
 class VariationSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Variation
         fields = '__all__'
@@ -21,6 +20,12 @@ class IngredientSerializer(serializers.ModelSerializer):
 class ProductListSerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(many=True, read_only=True)
 
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'

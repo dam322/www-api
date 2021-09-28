@@ -24,7 +24,7 @@ class Ingredient(models.Model):
         return self.variations.exists()
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name} - {self.product.name}"
 
 
 class Variation(models.Model):
@@ -33,4 +33,4 @@ class Variation(models.Model):
     ingredient = models.ForeignKey(to=Ingredient, on_delete=models.CASCADE, related_name='variations')
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name} - {self.ingredient.name}"
