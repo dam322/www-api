@@ -20,7 +20,7 @@ class Ingredient(models.Model):
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name='ingredients')
 
     @property
-    def has_options(self):
+    def has_variations(self):
         return self.variations.exists()
 
     def __str__(self):

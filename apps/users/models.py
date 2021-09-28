@@ -52,6 +52,13 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
+    class Meta:
+        ordering = ['type']
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     def __str__(self):
         return self.email
 
@@ -60,6 +67,3 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
-
-    class Meta:
-        ordering = ['type']
