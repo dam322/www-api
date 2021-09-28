@@ -3,16 +3,13 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from apps.products.views import (
-    ProductListCurrentUser, ProductListByRestaurant,
-    ProductUpdateAPIView, ProductDestroyAPIView, ProductCreateAPIView
+    ProductList, ProductUpdateDestroy, ProductCreate
 )
 
 urlpatterns = [
-    path('product/', ProductCreateAPIView.as_view()),
-    path('product/<int:pk>', ProductUpdateAPIView.as_view()),
-    path('product/delete/<int:pk>', ProductDestroyAPIView.as_view()),
-    path('list-products/', ProductListCurrentUser.as_view()),
-    path('list-products/<int:pk>', ProductListByRestaurant.as_view())
+    path('product/', ProductCreate.as_view()),
+    path('product/<int:pk>', ProductUpdateDestroy.as_view()),
+    path('products/<int:pk>', ProductList.as_view())
     # TODO ProductIngredients
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

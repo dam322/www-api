@@ -1,15 +1,14 @@
 from django.contrib.auth import logout, authenticate, login
 from rest_framework import status, views, generics
-from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from apps.users.models import User, Restaurant
-from apps.users.serializers import UserSerializer, UserLoginSerializer, SignupSerializer, RestaurantSerializer, RestaurantListSerializer
+from apps.users.models import User
+from apps.users.serializers import UserSerializer, UserLoginSerializer, SignupSerializer
 
 
-class LoginAPIView(views.APIView):
+class Login(views.APIView):
     permission_classes = [AllowAny]
     serializer_class = UserLoginSerializer
 
@@ -27,7 +26,7 @@ class LoginAPIView(views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LogoutAPIView(views.APIView):
+class Logout(views.APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
@@ -39,49 +38,27 @@ class LogoutAPIView(views.APIView):
         return Response({'message': 'Sesión no iniciada'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SignupAPIView(generics.CreateAPIView):
+class Signup(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = SignupSerializer
 
 
-class ListEmployeesView(generics.ListAPIView):
+class Employess(generics.ListAPIView):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = SignupSerializer
 
     def get_queryset(self):
-        restaurant = Restaurant.objects.get(administrator=self.request.user)
-        return restaurant.employees
+        return User.objects.filter(type=User.UserType.EMPLOYEE)
 
 
-class AccountAPIView(generics.RetrieveUpdateDestroyAPIView):
+class Account(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
 
-class RestaurantRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Restaurant.objects.all()
-    permission_classes = (IsAuthenticated,)
-    serializer_class = RestaurantSerializer
-
-
 class CustomPagination(PageNumberPagination):
     max_page_size = 20
     page_size = 20
-
-
-class RestaurantListAPIView(generics.ListAPIView):
-    queryset = Restaurant.objects.all()
-    permission_classes = (IsAuthenticated,)
-    serializer_class = RestaurantListSerializer
-    pagination_class = CustomPagination
-    filter_backends = [SearchFilter]
-    search_fields = ['direction', 'name', 'city']
-
-
-class RestaurantCreateAPIView(generics.CreateAPIView):
-    queryset = Restaurant.objects.all()
-    permission_classes = (IsAuthenticated,)
-    serializer_class = RestaurantSerializer

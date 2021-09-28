@@ -1,11 +1,8 @@
 from django.db import models
 
-from apps.users.models import Restaurant
-
 
 class Product(models.Model):
     name = models.CharField(max_length=32)
-    restaurant = models.ForeignKey(to=Restaurant, on_delete=models.CASCADE, related_name='products')
     is_customizable = models.BooleanField()
     is_available = models.BooleanField()
     price = models.IntegerField()
@@ -13,9 +10,6 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name}"
-
-    def administrator(self):
-        return self.restaurant.administrator
 
 
 class Ingredient(models.Model):

@@ -4,7 +4,7 @@ from rest_framework import serializers, status
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import ValidationError
 
-from apps.users.models import User, Restaurant
+from apps.users.models import User
 
 
 class SmallUserSerializer(serializers.ModelSerializer):
@@ -21,23 +21,7 @@ class SmallUserSerializer(serializers.ModelSerializer):
                   )
 
 
-class RestaurantListSerializer(serializers.ModelSerializer):
-    administrator = SmallUserSerializer(read_only=True)
-
-    class Meta:
-        model = Restaurant
-        fields = '__all__'
-
-
-class RestaurantSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Restaurant
-        fields = '__all__'
-
-
 class UserSerializer(serializers.ModelSerializer):
-    restaurant = RestaurantSerializer()
-
     class Meta:
         model = User
         fields = ('id',
@@ -49,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
                   'birth_day',
                   'direction',
                   'city',
-                  'restaurant')
+                  )
 
 
 class UserLoginSerializer(serializers.ModelSerializer):

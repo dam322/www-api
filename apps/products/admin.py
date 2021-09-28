@@ -11,8 +11,8 @@ class IngredientInline(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = (IngredientInline,)
-    list_filter = ('name', 'restaurant', 'is_customizable')
-    list_display = ('name', 'restaurant', 'is_customizable')
+    list_filter = ('name', 'is_customizable')
+    list_display = ('name', 'is_customizable')
 
 
 class OptionInline(admin.TabularInline):

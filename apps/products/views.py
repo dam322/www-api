@@ -1,51 +1,23 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Product
 from .serializers import ProductListSerializer
-from ..users.models import Restaurant
 
 
-class ProductCreateAPIView(generics.CreateAPIView):
+class ProductCreate(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductListSerializer
     permission_classes = (IsAuthenticated,)
 
 
-class ProductUpdateAPIView(generics.UpdateAPIView):
+class ProductUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductListSerializer
+    queryset = Product.objects.all()
     permission_classes = (IsAuthenticated,)
 
-    def get_queryset(self):
-        restaurant = get_object_or_404(Restaurant, administrator=self.request.user)
-        product = get_object_or_404(restaurant.products, id=self.kwargs['pk'])
-        return Product.objects.filter(id=product.id)
 
-
-class ProductDestroyAPIView(generics.DestroyAPIView):
+class ProductList(generics.ListAPIView):
     serializer_class = ProductListSerializer
+    queryset = Product.objects.all()
     permission_classes = (IsAuthenticated,)
-
-    def get_queryset(self):
-        restaurant = get_object_or_404(Restaurant, administrator=self.request.user)
-        product = get_object_or_404(restaurant.products, id=self.kwargs['pk'])
-        return Product.objects.filter(id=product.id)
-
-
-class ProductListCurrentUser(generics.ListAPIView):
-    serializer_class = ProductListSerializer
-    permission_classes = (IsAuthenticated,)
-
-    def get_queryset(self):
-        restaurant = get_object_or_404(Restaurant, administrator=self.request.user)
-        return restaurant.products
-
-
-class ProductListByRestaurant(generics.ListAPIView):
-    serializer_class = ProductListSerializer
-    permission_classes = (IsAuthenticated,)
-
-    def get_queryset(self):
-        restaurant = get_object_or_404(Restaurant, id=self.kwargs['pk'])
-        return restaurant.products

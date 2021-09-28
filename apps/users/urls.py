@@ -1,18 +1,14 @@
 from django.contrib import admin
 from django.urls import path
 from .views import (
-    LoginAPIView, LogoutAPIView, SignupAPIView, AccountAPIView, ListEmployeesView,
-    RestaurantRetrieveUpdateDestroyAPIView, RestaurantListAPIView, RestaurantCreateAPIView
+    Login, Logout, Signup, Account, Employess,
 )
 
 urlpatterns = [
-    path('login/', LoginAPIView.as_view()),
-    path('logout/', LogoutAPIView.as_view()),
-    path('signup/', SignupAPIView.as_view()),
-    path('account/<int:pk>', AccountAPIView.as_view()),
-    # Restaurants
-    path('restaurants/', RestaurantListAPIView.as_view()),
-    path('restaurant/create', RestaurantCreateAPIView.as_view()),
-    path('restaurant/<int:pk>', RestaurantRetrieveUpdateDestroyAPIView.as_view()),
-    path('list-employees/', ListEmployeesView.as_view()),
+    path('login/', Login.as_view()),
+    path('logout/', Logout.as_view()),
+    path('signup/', Signup.as_view()),
+    path('account/<int:pk>', Account.as_view()),
+    # Employees
+    path('employees/', Employess.as_view()),
 ]
