@@ -5,8 +5,17 @@ from .serializers import OrderListSerializer, OrderCreateSerializer
 
 
 class ListAllOrder(generics.ListAPIView):
-    queryset = Order.objects.all()
     serializer_class = OrderListSerializer
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
+
+
+class RetrieveOrder(generics.RetrieveAPIView):
+    serializer_class = OrderListSerializer
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user, id=self.kwargs['pk'])
 
 
 class CreateOrder(generics.CreateAPIView):
