@@ -62,7 +62,6 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        print(validated_data)
         products = validated_data.pop('products')
         order = Order.objects.create(**validated_data)
         order.save()
@@ -71,6 +70,9 @@ class OrderCreateSerializer(serializers.ModelSerializer):
             order_product = OrderProduct.objects.create(order=order, **product_data)
             order_product.save()
             for ingredient_data in ingredients:
-                ingredient = OrderProductIngredient.objects.create(order_product=order_product, **ingredient_data)
-                ingredient.save()
+                # TODO Falta verificar que todos los ingredientes estén en la petición
+                # TODO Aún en duda de si es necesario
+                if order_product.product.ingredients.get(id=ingredient_data['ingredient'].id):
+                    ingredient = OrderProductIngredient.objects.create(order_product=order_product, **ingredient_data)
+                    ingredient.save()
         return order
