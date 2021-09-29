@@ -1,13 +1,27 @@
 from rest_framework import serializers
 
 from apps.orders.models import Order, OrderProduct, OrderProductIngredient
-from apps.products.serializers import ProductSerializer
+from apps.products.serializers import ProductSerializer, IngredientSerializer, VariationSerializer
 
 
 class OrderProductIngredientSerializer(serializers.ModelSerializer):
+    ingredient = IngredientSerializer()
+    variation = VariationSerializer()
+
     class Meta:
         model = OrderProductIngredient
         fields = '__all__'
+
+
+class OrderProductIngredientCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderProductIngredient
+        fields = '__all__'
+        extra_kwargs = {
+            'order_product': {
+                'read_only': True,
+            }
+        }
 
 
 class OrderProductSerializer(serializers.ModelSerializer):
@@ -19,9 +33,44 @@ class OrderProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderProductCreateSerializer(serializers.ModelSerializer):
+    ingredients = OrderProductIngredientCreateSerializer(many=True)
+
+    class Meta:
+        model = OrderProduct
+        fields = '__all__'
+        extra_kwargs = {
+            'order': {
+                'read_only': True,
+            }
+        }
+
+
+class OrderListSerializer(serializers.ModelSerializer):
     products = OrderProductSerializer(many=True)
 
     class Meta:
         model = Order
         fields = '__all__'
+
+
+class OrderCreateSerializer(serializers.ModelSerializer):
+    products = OrderProductCreateSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+    def create(self, validated_data):
+        print(validated_data)
+        products = validated_data.pop('products')
+        order = Order.objects.create(**validated_data)
+        order.save()
+        for product_data in products:
+            ingredients = product_data.pop('ingredients')
+            order_product = OrderProduct.objects.create(order=order, **product_data)
+            order_product.save()
+            for ingredient_data in ingredients:
+                ingredient = OrderProductIngredient.objects.create(order_product=order_product, **ingredient_data)
+                ingredient.save()
+        return order

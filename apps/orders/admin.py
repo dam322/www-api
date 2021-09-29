@@ -11,6 +11,7 @@ class OrderProductIngredientInline(admin.TabularInline):
         qs = super(OrderProductIngredientInline, self).get_queryset(request)
         return qs
 
+
 class OrderProductInline(admin.TabularInline):
     model = OrderProduct
 

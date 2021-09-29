@@ -9,7 +9,7 @@ class VariationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class IngredientSerializer(serializers.ModelSerializer):
+class IngredientListSerializer(serializers.ModelSerializer):
     variations = VariationSerializer(many=True)
 
     class Meta:
@@ -17,8 +17,16 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class IngredientSerializer(serializers.ModelSerializer):
+    has_variations = serializers.BooleanField()
+
+    class Meta:
+        model = Ingredient
+        fields = '__all__'
+
+
 class ProductListSerializer(serializers.ModelSerializer):
-    ingredients = IngredientSerializer(many=True, read_only=True)
+    ingredients = IngredientListSerializer(many=True, read_only=True)
 
     class Meta:
         model = Product

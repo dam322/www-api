@@ -11,9 +11,9 @@ class Order(models.Model):
         IN_PROCESS = 'in process'
         PENDING = 'pending'
 
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
-    status = models.CharField(choices=OrderStatus.choices, default=OrderStatus.PENDING, null=False, max_length=16)
+    status = models.CharField(choices=OrderStatus.choices, default=OrderStatus.PENDING, blank=True, max_length=16)
 
     class Meta:
         ordering = ['timestamp']
